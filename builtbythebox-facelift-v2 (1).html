@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Box — Built Different</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0a0a0a;
+    --dark: #111111;
+    --card: #161616;
+    --border: #222222;
+    --green: #7dd956;
+    --green-light: #96e870;
+    --green-dark: #5fbe35;
+    --white: #f5f0eb;
+    --muted: #888;
+    --accent: #7dd956;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Barlow', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 48px;
+    background: rgba(10,10,10,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 2px;
+    color: var(--white);
+    text-decoration: none;
+  }
+
+  .nav-logo span { color: var(--green); }
+
+  .nav-links {
+    display: flex;
+    gap: 36px;
+    list-style: none;
+    align-items: center;
+  }
+
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--white); }
+
+  .nav-cta {
+    background: var(--green) !important;
+    color: #0a0a0a !important;
+    padding: 10px 22px;
+    clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
+    transition: background 0.2s !important;
+  }
+
+  .nav-cta:hover { background: var(--green-dark) !important; }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 140px 64px 80px 64px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-eyebrow {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .hero-eyebrow::before {
+    content: '';
+    display: block;
+    width: 32px;
+    height: 2px;
+    background: var(--green);
+  }
+
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(72px, 8vw, 112px);
+    line-height: 0.92;
+    letter-spacing: 1px;
+    margin-bottom: 28px;
+  }
+
+  .hero-title .line2 { color: var(--green); }
+
+  .hero-sub {
+    font-size: 17px;
+    color: #aaa;
+    max-width: 420px;
+    margin-bottom: 44px;
+    line-height: 1.7;
+  }
+
+  .hero-sub strong { color: var(--white); }
+
+  .hero-btns {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    background: var(--green);
+    color: #0a0a0a;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 16px 36px;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+    transition: background 0.2s, transform 0.15s;
+    display: inline-block;
+  }
+
+  .btn-primary:hover { background: var(--green-dark); transform: translateY(-1px); }
+
+  .btn-ghost {
+    color: var(--white);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 15px 28px;
+    border: 1px solid rgba(255,255,255,0.2);
+    clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
+    transition: border-color 0.2s, color 0.2s;
+  }
+
+  .btn-ghost:hover { border-color: var(--white); }
+
+  .hero-stats {
+    display: flex;
+    gap: 40px;
+    margin-top: 56px;
+    padding-top: 40px;
+    border-top: 1px solid var(--border);
+  }
+
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 42px;
+    color: var(--white);
+    line-height: 1;
+  }
+
+  .stat-num span { color: var(--green); }
+
+  .stat-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  .hero-right {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-img-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(to right, var(--black) 0%, transparent 30%),
+      linear-gradient(to top, var(--black) 0%, transparent 20%),
+      url('https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=900&q=80') center/cover no-repeat;
+  }
+
+  .hero-tag {
+    position: absolute;
+    bottom: 60px;
+    right: 40px;
+    background: var(--green);
+    padding: 18px 24px;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+    z-index: 2;
+  }
+
+  .hero-tag-text {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    letter-spacing: 2px;
+    color: var(--white);
+    display: block;
+  }
+
+  .hero-tag-sub {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.75);
+    display: block;
+    margin-top: 2px;
+  }
+
+  /* ─── MARQUEE STRIP ─── */
+  .marquee-strip {
+    background: var(--green);
+    overflow: hidden;
+    padding: 12px 0;
+    white-space: nowrap;
+  }
+
+  .marquee-track {
+    display: inline-flex;
+    animation: marquee 20s linear infinite;
+  }
+
+  .marquee-item {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    letter-spacing: 4px;
+    color: var(--white);
+    padding: 0 32px;
+    opacity: 0.9;
+  }
+
+  .marquee-dot {
+    color: rgba(255,255,255,0.4);
+  }
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* ─── SECTIONS ─── */
+  section {
+    padding: 96px 64px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .section-full {
+    max-width: 100%;
+    padding: 96px 0;
+  }
+
+  .section-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 64px;
+  }
+
+  .label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .label::before {
+    content: '';
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--green);
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(48px, 5vw, 72px);
+    line-height: 0.95;
+    margin-bottom: 20px;
+  }
+
+  .section-sub {
+    color: var(--muted);
+    font-size: 16px;
+    max-width: 560px;
+    line-height: 1.7;
+    margin-bottom: 56px;
+  }
+
+  /* ─── SERVICES ─── */
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    background: var(--border);
+  }
+
+  .service-card {
+    background: var(--card);
+    padding: 48px 40px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+    cursor: default;
+  }
+
+  .service-card::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--green);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.35s ease;
+  }
+
+  .service-card:hover { background: #1a1a1a; }
+  .service-card:hover::before { transform: scaleX(1); }
+
+  .service-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 64px;
+    line-height: 1;
+    color: rgba(255,255,255,0.05);
+    position: absolute;
+    top: 24px; right: 28px;
+    transition: color 0.3s;
+  }
+
+  .service-card:hover .service-num { color: rgba(232,50,26,0.08); }
+
+  .service-icon {
+    font-size: 28px;
+    margin-bottom: 20px;
+  }
+
+  .service-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 34px;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+    color: var(--white);
+  }
+
+  .service-desc {
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  /* ─── FREE CLASS BANNER ─── */
+  .free-class {
+    background: #0f0f0f;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 80px 64px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 48px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .free-class::before {
+    content: 'FREE CLASS';
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 200px;
+    color: rgba(125,217,86,0.04);
+    position: absolute;
+    right: -20px;
+    top: 50%;
+    transform: translateY(-50%);
+    white-space: nowrap;
+    letter-spacing: 10px;
+    pointer-events: none;
+  }
+
+  .free-class-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 12px;
+  }
+
+  .free-class-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(48px, 5vw, 72px);
+    line-height: 0.95;
+    color: var(--white);
+    max-width: 700px;
+  }
+
+  .btn-white {
+    background: var(--green);
+    color: #0a0a0a;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 18px 40px;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+    white-space: nowrap;
+    transition: opacity 0.2s;
+    display: inline-block;
+    position: relative;
+    z-index: 2;
+  }
+
+  .btn-white:hover { opacity: 0.88; }
+
+  /* ─── TESTIMONIALS ─── */
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .testimonial-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 36px 32px;
+    position: relative;
+    transition: border-color 0.25s, transform 0.25s;
+  }
+
+  .testimonial-card:hover {
+    border-color: var(--green);
+    transform: translateY(-3px);
+  }
+
+  .testimonial-stars {
+    color: var(--green);
+    font-size: 14px;
+    letter-spacing: 2px;
+    margin-bottom: 16px;
+  }
+
+  .testimonial-quote {
+    font-size: 15px;
+    line-height: 1.75;
+    color: #ccc;
+    margin-bottom: 24px;
+    font-style: italic;
+  }
+
+  .testimonial-author {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .testimonial-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--green);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    color: var(--white);
+    flex-shrink: 0;
+  }
+
+  .testimonial-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 1px;
+    color: var(--white);
+  }
+
+  .testimonial-since {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  /* ─── ABOUT SPLIT ─── */
+  .about-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .about-img {
+    position: relative;
+    aspect-ratio: 4/5;
+    overflow: hidden;
+  }
+
+  .about-img-bg {
+    position: absolute;
+    inset: 0;
+    background: url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=700&q=80') center/cover no-repeat;
+    filter: grayscale(20%);
+    transition: transform 0.6s ease;
+  }
+
+  .about-img:hover .about-img-bg { transform: scale(1.03); }
+
+  .about-img-badge {
+    position: absolute;
+    bottom: -20px;
+    right: -20px;
+    background: var(--green);
+    width: 120px;
+    height: 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%);
+    z-index: 2;
+  }
+
+  .badge-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    color: var(--white);
+    line-height: 1;
+  }
+
+  .badge-text {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.75);
+    text-align: center;
+    margin-top: 2px;
+  }
+
+  .about-content .section-title { margin-bottom: 16px; }
+
+  .about-body {
+    color: #aaa;
+    font-size: 16px;
+    line-height: 1.8;
+    margin-bottom: 32px;
+  }
+
+  .about-body + .about-body { margin-top: -16px; }
+
+  .about-values {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 40px;
+  }
+
+  .value-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--white);
+  }
+
+  .value-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--green);
+    flex-shrink: 0;
+    clip-path: polygon(2px 0%, 100% 0%, calc(100% - 2px) 100%, 0% 100%);
+  }
+
+  /* ─── SCHEDULE TEASER ─── */
+  .schedule-row {
+    display: flex;
+    align-items: stretch;
+    border: 1px solid var(--border);
+    margin-bottom: 2px;
+    transition: border-color 0.2s;
+    cursor: default;
+  }
+
+  .schedule-row:hover { border-color: var(--green); }
+
+  .schedule-day {
+    background: var(--card);
+    padding: 20px 28px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 2px;
+    color: var(--muted);
+    width: 140px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    transition: color 0.2s;
+  }
+
+  .schedule-row:hover .schedule-day { color: var(--white); }
+
+  .schedule-classes {
+    display: flex;
+    gap: 2px;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  .schedule-class {
+    background: var(--dark);
+    padding: 16px 20px;
+    flex: 1;
+    border-left: 1px solid var(--border);
+  }
+
+  .schedule-class-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--white);
+    margin-bottom: 4px;
+  }
+
+  .schedule-class-time {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: #080808;
+    border-top: 1px solid var(--border);
+    padding: 64px 64px 40px;
+  }
+
+  .footer-top {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    gap: 48px;
+    margin-bottom: 48px;
+  }
+
+  .footer-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    letter-spacing: 2px;
+    color: var(--white);
+    margin-bottom: 16px;
+  }
+
+  .footer-logo span { color: var(--green); }
+
+  .footer-desc {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.7;
+    max-width: 280px;
+  }
+
+  .footer-col-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--white);
+    margin-bottom: 20px;
+  }
+
+  .footer-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .footer-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover { color: var(--white); }
+
+  .footer-bottom {
+    border-top: 1px solid var(--border);
+    padding-top: 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-copy {
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .footer-copy span { color: var(--green); }
+
+  .social-links {
+    display: flex;
+    gap: 16px;
+  }
+
+  .social-link {
+    width: 36px;
+    height: 36px;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 14px;
+    transition: border-color 0.2s, color 0.2s;
+    clip-path: polygon(4px 0%, 100% 0%, calc(100% - 4px) 100%, 0% 100%);
+  }
+
+  .social-link:hover { border-color: var(--green); color: var(--white); }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(28px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-left > * {
+    animation: fadeUp 0.7s ease both;
+  }
+
+  .hero-eyebrow { animation-delay: 0.1s; }
+  .hero-title { animation-delay: 0.2s; }
+  .hero-sub { animation-delay: 0.3s; }
+  .hero-btns { animation-delay: 0.4s; }
+  .hero-stats { animation-delay: 0.5s; }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 900px) {
+    nav { padding: 16px 24px; }
+    .nav-links { display: none; }
+    .hero { grid-template-columns: 1fr; min-height: auto; }
+    .hero-right { height: 340px; }
+    .hero-left { padding: 120px 24px 48px; }
+    section { padding: 64px 24px; }
+    .services-grid { grid-template-columns: 1fr; }
+    .testimonials-grid { grid-template-columns: 1fr; }
+    .about-split { grid-template-columns: 1fr; gap: 40px; }
+    .free-class { grid-template-columns: 1fr; padding: 48px 24px; }
+    footer { padding: 48px 24px 32px; }
+    .footer-top { grid-template-columns: 1fr 1fr; gap: 32px; }
+    .hero-img-bg { background-position: 70% center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">THE <span>BOX</span></a>
+  <ul class="nav-links">
+    <li><a href="#">Classes</a></li>
+    <li><a href="#">Coaches</a></li>
+    <li><a href="#">Schedule</a></li>
+    <li><a href="#">Nutrition</a></li>
+    <li><a href="#">About</a></li>
+    <li><a href="#" class="nav-cta">Free Class</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow">Lindon, Utah's Top Gym</div>
+    <h1 class="hero-title">
+      Built<br>
+      <span class="line2">Different.</span>
+    </h1>
+    <p class="hero-sub">
+      No fluff, no ego. Just <strong>real people putting in real effort</strong> and getting stronger — physically, mentally, in every way.
+    </p>
+    <div class="hero-btns">
+      <a href="#" class="btn-primary">Claim Your Free Class</a>
+      <a href="#" class="btn-ghost">See Schedule →</a>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="stat-num">4<span>+</span></div>
+        <div class="stat-label">Years Strong</div>
+      </div>
+      <div>
+        <div class="stat-num">500<span>+</span></div>
+        <div class="stat-label">Members</div>
+      </div>
+      <div>
+        <div class="stat-num">20<span>+</span></div>
+        <div class="stat-label">Weekly Classes</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-img-bg" id="hero-img"></div>
+    <div class="hero-tag">
+      <span class="hero-tag-text">First Class Free</span>
+      <span class="hero-tag-sub">No commitment required</span>
+    </div>
+  </div>
+</div>
+
+<!-- MARQUEE -->
+<div class="marquee-strip">
+  <div class="marquee-track">
+    <span class="marquee-item">CrossFit</span>
+    <span class="marquee-item marquee-dot">✦</span>
+    <span class="marquee-item">Olympic Lifting</span>
+    <span class="marquee-item marquee-dot">✦</span>
+    <span class="marquee-item">Nutrition Coaching</span>
+    <span class="marquee-item marquee-dot">✦</span>
+    <span class="marquee-item">Personal Training</span>
+    <span class="marquee-item marquee-dot">✦</span>
+    <span class="marquee-item">Yoga</span>
+    <span class="marquee-item marquee-dot">✦</span>
+    <span class="marquee-item">Community</span>
+    <span class="marquee-item marquee-dot">✦</span>
+    <span class="marquee-item">Results</span>
+    <span class="marquee-item marquee-dot">✦</span>
+    <!-- duplicate for seamless loop -->
+    <span class="marquee-item">CrossFit</span>
+    <span class="marquee-item marquee-dot">✦</span>
+    <span class="marquee-item">Olympic Lifting</span>
+    <span class="marquee-item marquee-dot">✦</span>
+    <span class="marquee-item">Nutrition Coaching</span>
+    <span class="marquee-item marquee-dot">✦</span>
+    <span class="marquee-item">Personal Training</span>
+    <span class="marquee-item marquee-dot">✦</span>
+    <span class="marquee-item">Yoga</span>
+    <span class="marquee-item marquee-dot">✦</span>
+    <span class="marquee-item">Community</span>
+    <span class="marquee-item marquee-dot">✦</span>
+    <span class="marquee-item">Results</span>
+    <span class="marquee-item marquee-dot">✦</span>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section>
+  <div class="label">What We Offer</div>
+  <h2 class="section-title">Train Hard.<br>Train Smart.</h2>
+  <p class="section-sub">Whether you're chasing PRs or just trying to survive burpees — there's a place for you here.</p>
+  <div class="services-grid">
+    <div class="service-card">
+      <span class="service-num">01</span>
+      <div class="service-icon">🏋️</div>
+      <div class="service-title">Group Classes</div>
+      <p class="service-desc">Multiple sessions throughout the week built around CrossFit methodology. Come in, push hard, leave better. Every skill level welcome — coaches scale everything.</p>
+    </div>
+    <div class="service-card">
+      <span class="service-num">02</span>
+      <div class="service-icon">🎯</div>
+      <div class="service-title">1-on-1 Training</div>
+      <p class="service-desc">Your goals, your pace. Work directly with an expert coach to build a program that fits your life and gets you where you want to go faster.</p>
+    </div>
+    <div class="service-card">
+      <span class="service-num">03</span>
+      <div class="service-icon">🥗</div>
+      <div class="service-title">Nutrition Coaching</div>
+      <p class="service-desc">Supplement your training with professional nutrition guidance. Because what you do outside the gym matters just as much as what you do inside it.</p>
+    </div>
+    <div class="service-card">
+      <span class="service-num">04</span>
+      <div class="service-icon">⚡</div>
+      <div class="service-title">Olympic Lifting</div>
+      <p class="service-desc">Safely learn the snatch, the clean & jerk, and accessory work from coaches who know their stuff. Build explosive power and real technique.</p>
+    </div>
+    <div class="service-card">
+      <span class="service-num">05</span>
+      <div class="service-icon">🧘</div>
+      <div class="service-title">Yoga</div>
+      <p class="service-desc">New to the schedule — Tuesdays & Thursdays at 8 PM. Balance your intensity with mobility, breath work, and mental reset. Try the first two weeks free.</p>
+    </div>
+    <div class="service-card">
+      <span class="service-num">06</span>
+      <div class="service-icon">🤝</div>
+      <div class="service-title">Community</div>
+      <p class="service-desc">The Box is a family. People who show up for each other on and off the floor. You won't find a more welcoming, encouraging gym in the valley.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FREE CLASS BANNER -->
+<div class="free-class">
+  <div>
+    <div class="free-class-label">No Risk. No Commitment.</div>
+    <div class="free-class-title">Your First Class Is On Us.</div>
+  </div>
+  <a href="#book" class="btn-white">Claim Your Free Class →</a>
+</div>
+
+<!-- BOOKING EMBED -->
+<section id="book">
+  <div class="label">Get Started</div>
+  <h2 class="section-title">Book Your<br>Free Class.</h2>
+  <p class="section-sub">Pick a time that works for you — no commitment, no credit card.</p>
+  <div style="background: var(--card); border: 1px solid var(--border); padding: 32px; max-width: 860px;">
+    <iframe src="https://link.gymacademy.info/widget/booking/JQH73Q2Wv4AoTfUtmF9K" style="width: 100%; border: none; overflow: hidden; min-height: 600px;" scrolling="no" id="tUrYfy1B7etrBMIqTtUT_1773275034473"></iframe>
+  </div>
+</section>
+<script src="https://link.gymacademy.info/js/form_embed.js" type="text/javascript"></script>
+
+<!-- TESTIMONIALS -->
+<section>
+  <div class="label">Member Stories</div>
+  <h2 class="section-title">Real People.<br>Real Results.</h2>
+  <p class="section-sub">Don't take our word for it — hear from the people who show up every day.</p>
+  <div class="testimonials-grid">
+    <div class="testimonial-card">
+      <div class="testimonial-stars">★★★★★</div>
+      <p class="testimonial-quote">"I absolutely love this gym. The coaches are so knowledgeable about the lifts and health. The people here are incredible — like a little family. I've achieved so many goals because of the support I've gotten."</p>
+      <div class="testimonial-author">
+        <div class="testimonial-avatar">J</div>
+        <div>
+          <div class="testimonial-name">Jenna M.</div>
+          <div class="testimonial-since">Member since 2021</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card">
+      <div class="testimonial-stars">★★★★★</div>
+      <p class="testimonial-quote">"I started 4 years ago just to get in shape. I gained an appreciation for physical AND mental health. Love my gym family — some of the best people I know, caring about the well-being of every single person."</p>
+      <div class="testimonial-author">
+        <div class="testimonial-avatar">R</div>
+        <div>
+          <div class="testimonial-name">Ryan T.</div>
+          <div class="testimonial-since">Member since 2020</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card">
+      <div class="testimonial-stars">★★★★★</div>
+      <p class="testimonial-quote">"I've been a client AND a coach here. You will not find a more caring staff or gym family. Our community is unlike any other. Want to lift heavy? Want to sweat? Want to box? They've got you."</p>
+      <div class="testimonial-author">
+        <div class="testimonial-avatar">K</div>
+        <div>
+          <div class="testimonial-name">Katie W.</div>
+          <div class="testimonial-since">Coach & Member</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<div class="section-full" style="background: #0d0d0d; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+  <div class="section-inner">
+    <div class="about-split">
+      <div class="about-img">
+        <div class="about-img-bg" id="about-img"></div>
+        <div class="about-img-badge">
+          <span class="badge-num">#1</span>
+          <span class="badge-text">CrossFit<br>Community</span>
+        </div>
+      </div>
+      <div class="about-content">
+        <div class="label">Our Story</div>
+        <h2 class="section-title">Built on<br>Real Work.</h2>
+        <p class="about-body">The Box was built around a simple belief: the gym should be your outlet. A place where you build confidence, community, and grit — not just muscle.</p>
+        <p class="about-body">Whether you're chasing big goals or just trying to survive your next workout, you're part of this crew. No fluff. No ego. Just results.</p>
+        <div class="about-values">
+          <div class="value-item"><span class="value-dot"></span>Hard Work</div>
+          <div class="value-item"><span class="value-dot"></span>No Ego</div>
+          <div class="value-item"><span class="value-dot"></span>Real Community</div>
+          <div class="value-item"><span class="value-dot"></span>Expert Coaching</div>
+          <div class="value-item"><span class="value-dot"></span>All Skill Levels</div>
+          <div class="value-item"><span class="value-dot"></span>Actual Results</div>
+        </div>
+        <a href="#" class="btn-primary">Meet the Coaches</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SCHEDULE TEASER -->
+<section>
+  <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 40px; flex-wrap: wrap; gap: 16px;">
+    <div>
+      <div class="label">This Week</div>
+      <h2 class="section-title">Find Your Class.</h2>
+    </div>
+    <a href="#" class="btn-ghost">Full Schedule →</a>
+  </div>
+
+  <div class="schedule-row">
+    <div class="schedule-day">MON</div>
+    <div class="schedule-classes">
+      <div class="schedule-class">
+        <div class="schedule-class-name">CrossFit</div>
+        <div class="schedule-class-time">6:00 AM · 9:00 AM · 5:00 PM</div>
+      </div>
+      <div class="schedule-class">
+        <div class="schedule-class-name">Open Gym</div>
+        <div class="schedule-class-time">7:00 AM – 8:00 PM</div>
+      </div>
+    </div>
+  </div>
+  <div class="schedule-row">
+    <div class="schedule-day">TUE</div>
+    <div class="schedule-classes">
+      <div class="schedule-class">
+        <div class="schedule-class-name">CrossFit</div>
+        <div class="schedule-class-time">6:00 AM · 9:00 AM · 5:00 PM</div>
+      </div>
+      <div class="schedule-class">
+        <div class="schedule-class-name">Yoga</div>
+        <div class="schedule-class-time">8:00 PM — NEW!</div>
+      </div>
+    </div>
+  </div>
+  <div class="schedule-row">
+    <div class="schedule-day">WED</div>
+    <div class="schedule-classes">
+      <div class="schedule-class">
+        <div class="schedule-class-name">Olympic Lifting</div>
+        <div class="schedule-class-time">6:00 AM · 5:30 PM</div>
+      </div>
+      <div class="schedule-class">
+        <div class="schedule-class-name">CrossFit</div>
+        <div class="schedule-class-time">9:00 AM · 6:00 PM</div>
+      </div>
+    </div>
+  </div>
+  <div class="schedule-row">
+    <div class="schedule-day">THU</div>
+    <div class="schedule-classes">
+      <div class="schedule-class">
+        <div class="schedule-class-name">CrossFit</div>
+        <div class="schedule-class-time">6:00 AM · 9:00 AM · 5:00 PM</div>
+      </div>
+      <div class="schedule-class">
+        <div class="schedule-class-name">Yoga</div>
+        <div class="schedule-class-time">8:00 PM — NEW!</div>
+      </div>
+    </div>
+  </div>
+  <div class="schedule-row">
+    <div class="schedule-day">SAT</div>
+    <div class="schedule-classes">
+      <div class="schedule-class">
+        <div class="schedule-class-name">Community WOD</div>
+        <div class="schedule-class-time">9:00 AM — Everyone Welcome</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-logo">THE <span>BOX</span></div>
+      <p class="footer-desc">Lindon, Utah's community fitness gym. Built on hard work, real coaching, and a culture where everyone belongs.</p>
+    </div>
+    <div>
+      <div class="footer-col-title">Train</div>
+      <ul class="footer-links">
+        <li><a href="#">Group Classes</a></li>
+        <li><a href="#">1-on-1 Training</a></li>
+        <li><a href="#">Olympic Lifting</a></li>
+        <li><a href="#">Yoga</a></li>
+        <li><a href="#">Class Schedule</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Learn</div>
+      <ul class="footer-links">
+        <li><a href="#">Nutrition Coaching</a></li>
+        <li><a href="#">Our Coaches</a></li>
+        <li><a href="#">About The Box</a></li>
+        <li><a href="#">Member Stories</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Contact</div>
+      <ul class="footer-links">
+        <li><a href="#">Lindon, Utah</a></li>
+        <li><a href="#"><span class="__cf_email__" data-cfemail="c7aea9a1a887a5b2aeabb3a5beb3afa2a5a8bfe9a4a8aa">[email&#160;protected]</span></a></li>
+        <li><a href="#">Instagram</a></li>
+        <li><a href="#">Facebook</a></li>
+        <li><a href="#" style="color: var(--green); font-weight: 600;">Free Class →</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2025 The Box — Lindon, UT. Built with <span>♥</span> and burpees.</div>
+    <div class="social-links">
+      <a href="#" class="social-link">IG</a>
+      <a href="#" class="social-link">FB</a>
+    </div>
+  </div>
+</footer>
+
+
+
+</body>
+</html>
